@@ -21,8 +21,6 @@ class MarkovTokenAdult():
     def sanitize(self, text):
         return re.sub('[\"\']', '', text.lower())
 
-    # for loading in the training data
-    # serialize data using Pickle
     def generate_corpus(self, data):
         w1 = self.stop
         w2 = self.stop
@@ -37,3 +35,21 @@ class MarkovTokenAdult():
                 self.corpus.setdefault((w1, w2), []).append(word)
                 w1, w2 = w2, word
         self.corpus.setdefault((w1, w2), []).append(self.stop)
+
+    # seed should be a bigram
+    # ie: "I wish"
+    def generate_response(self, seed):
+        response = []
+
+        for x in range(self.max_words):
+
+            words = seed.split(" ")
+            words = map(self.sanitize, words)
+
+            response.append(words[0])
+
+            new_word = random.choice(self.corpus[(words[0], words[1])])
+
+            if new_word not in response:
+                response.append(new_word)
+
