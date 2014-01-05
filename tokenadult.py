@@ -36,20 +36,25 @@ class MarkovTokenAdult():
                 w1, w2 = w2, word
         self.corpus.setdefault((w1, w2), []).append(self.stop)
 
-    # seed should be a bigram
+    # seed should be a bigram separated by a space
     # ie: "I wish"
     def generate_response(self, seed):
         response = []
+        key = seed
 
         for x in range(self.max_words):
 
-            words = seed.split(" ")
+            words = key.split(" ")
             words = map(self.sanitize, words)
 
             response.append(words[0])
 
             new_word = random.choice(self.corpus[(words[0], words[1])])
 
-            if new_word not in response:
-                response.append(new_word)
+            if not new_word:
+                break
+
+            key = words[1] + " " + new_word
+
+        return ' '.join(response)
 
