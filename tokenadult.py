@@ -26,6 +26,7 @@ class MarkovTokenAdult():
         w2 = self.stop
         for line in data:
             line = self.sanitize(line)
+            #print line
             for word in line.split():
                 # add word without punctuation
                 if word[-1] in self.end_sentence:
@@ -44,7 +45,7 @@ class MarkovTokenAdult():
 
         for x in range(self.max_words):
 
-            words = key.split(" ")
+            words = key.split()
             words = map(self.sanitize, words)
 
             response.append(words[0])
@@ -57,4 +58,24 @@ class MarkovTokenAdult():
             key = words[1] + " " + new_word
 
         return ' '.join(response)
+
+    def load(self, filename):
+        with open(filename, "rb") as f:
+            try:
+                self.corpus = pickle.load(f)
+                print("Pickle load was successful")
+                return True
+            except:
+                print("Loading corpus failed.")
+                return False
+
+    def dump(self, filename):
+        try:
+            with open(filename, "wb") as f:
+                pickle.dump(self.corpus, f)
+                print("Pickle dump was successful")
+                return True
+        except:
+            print("Could not dump.")
+            return False
 
