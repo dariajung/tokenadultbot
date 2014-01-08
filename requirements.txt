@@ -2,6 +2,7 @@ BeautifulSoup==3.2.1
 distribute==0.6.43
 parsedatetime==1.2
 stevedore==0.8
+urllib3==1.7.1
 virtualenv==1.9.1
 virtualenv-clone==0.2.4
 virtualenvwrapper==4.0
